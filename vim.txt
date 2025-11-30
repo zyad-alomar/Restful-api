@@ -1,0 +1,21 @@
+i : insert mode before the space 
+a : insert mode after the space
+A : insert mode at the end of the line
+w : jump to the next first letter
+e : jump to the next last letter
+b : back to the previous first letter
+f : find 
+; : repeat the find
+, : reverse the ;
+gg : go to the up
+G : go to the end
+M : go to the visual center
+zz : make the line my visual center
+dw : delete word
+u : undo
+p : paste
+yw : yank a work
+dd : delete the entire line
+yy : yank the entire line
+P : paste upove the line
+R : write over
