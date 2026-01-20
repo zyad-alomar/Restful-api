@@ -4,26 +4,33 @@ const StringDecoder = require("string_decoder").StringDecoder;
 const config = require("./config");
 const https = require("https");
 const fs = require("fs");
+const _data = require("./lib/data");
+
+_data.read("test", "newFile", (err, data) => {
+  console.log(`this is the error : ${err} and this is the data : ${data}`);
+});
 
 const httpServer = http.createServer((req, res) => {
- unifiedServer(req,res);
+  unifiedServer(req, res);
 });
-
 let httpsServerOptions = {
-  "key" : fs.readFileSync("https/key.pem"),
-  "cert" : fs.readFileSync("https/cert.pem")
+  key: fs.readFileSync("https/key.pem"),
+  cert: fs.readFileSync("https/cert.pem"),
 };
 
-const httpsServer = https.createServer(httpsServerOptions,(req,res)=>{
- unifiedServer(req,res);
+const httpsServer = https.createServer(httpsServerOptions, (req, res) => {
+  unifiedServer(req, res);
 });
 
-httpServer.listen(config.httpPort, () => console.log("listening to port "+config.httpPort));
+httpServer.listen(config.httpPort, () =>
+  console.log("listening to port " + config.httpPort)
+);
 
-httpsServer.listen(config.httpsPort, () => console.log("listening to port "+config.httpsPort));
+httpsServer.listen(config.httpsPort, () =>
+  console.log("listening to port " + config.httpsPort)
+);
 
-let unifiedServer = (req,res)=>{
-
+let unifiedServer = (req, res) => {
   let headers = req.headers;
   let parsedUrl = new URL(`http://${headers.host}${req.url}`);
   let path = parsedUrl.pathname;
@@ -55,7 +62,7 @@ let unifiedServer = (req,res)=>{
       statusCode = typeof statusCode == "number" ? statusCode : 200;
       payload = typeof payload == "object" ? payload : {};
       let payloadString = JSON.stringify(payload);
-      res.setHeader("Content-Type","application/json");
+      res.setHeader("Content-Type", "application/json");
       res.writeHead(statusCode);
       res.end(payloadString);
       console.log("returning this response : ", payloadString, statusCode);
@@ -63,12 +70,10 @@ let unifiedServer = (req,res)=>{
   });
 };
 
-
-
 //define the handlers
 let handlers = {};
 
-handlers.ping = (data,callback)=>{
+handlers.ping = (data, callback) => {
   callback(200);
 };
 handlers.notFound = (data, callback) => {
@@ -78,5 +83,5 @@ handlers.notFound = (data, callback) => {
 //define a request router
 
 let router = {
-  ping : handlers.ping 
+  ping: handlers.ping,
 };
